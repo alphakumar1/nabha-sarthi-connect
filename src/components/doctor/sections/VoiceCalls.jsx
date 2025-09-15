@@ -1,31 +1,37 @@
 // src/components/doctor/sections/VoiceCalls.jsx
-import React from 'react';
-import { Phone } from 'lucide-react';
-import Card from '../../common/Card';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Phone } from "lucide-react";
+import NavBar from "../../common/NavBar";
+import { useLanguage } from "../../../context/LanguageContext";
 
-export default function VoiceCalls({ calls = [] }) {
-  const sample = calls.length ? calls : [
-    { id: 'v1', patient: 'Ramesh', time: '11:00 AM', status: 'Scheduled' },
-  ];
+export default function VoiceCalls() {
+  const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
-    <section className="space-y-4">
-      <div className="flex items-center gap-3">
-        <Phone className="h-8 w-8 text-primary" />
-        <h2 className="text-2xl font-bold">Voice Calls</h2>
-      </div>
+    <div className="min-h-screen bg-background">
+      <NavBar />
+      <main className="p-6 max-w-6xl mx-auto">
+        <button
+          onClick={() => navigate("/doctor")}
+          className="flex items-center gap-2 text-sm text-primary hover:underline mb-4"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t.dashboard}
+        </button>
 
-      <div className="space-y-3">
-        {sample.map(c => (
-          <Card key={c.id} className="flex items-center justify-between">
-            <div>
-              <div className="font-semibold">{c.patient}</div>
-              <div className="text-sm text-muted-foreground">{c.time}</div>
-            </div>
-            <div><button className="px-3 py-1 rounded-md bg-secondary text-white">Call</button></div>
-          </Card>
-        ))}
-      </div>
-    </section>
+        <h1 className="text-2xl font-bold flex items-center gap-2 mb-6">
+          <Phone className="h-6 w-6 text-primary" />
+          {t.voiceCalls}
+        </h1>
+
+        <div className="bg-card rounded-xl p-6 shadow">
+          <p className="text-muted-foreground">
+            {t.voiceCalls} section content goes here.
+          </p>
+        </div>
+      </main>
+    </div>
   );
 }

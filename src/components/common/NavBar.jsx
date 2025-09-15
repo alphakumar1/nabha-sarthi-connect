@@ -1,50 +1,64 @@
 // src/components/common/NavBar.jsx
-import React from 'react';
-import { Heart, Globe, LogOut, Menu } from 'lucide-react';
-import { useLanguage } from '../../context/LanguageContext';
-import { useAuth } from '../../context/AuthContext';
+import React from "react";
+import { LogOut } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
+import { useAuth } from "../../context/AuthContext";
 
-export default function NavBar({ onMenuClick }) {
+export default function NavBar() {
   const { t, lang, setLang } = useLanguage();
   const { user, logout } = useAuth();
 
+  const langs = [
+    { code: "en", label: "EN" },
+    { code: "hi", label: "हि" },
+    { code: "pb", label: "ਪੰ" },
+  ];
+
   return (
-    <header className="w-full px-4 py-3 flex items-center justify-between border-b bg-background/60">
-      <div className="flex items-center gap-3">
-        <button onClick={onMenuClick} className="p-2 rounded-lg hover:bg-muted">
-          <Menu className="h-5 w-5" />
-        </button>
+    <header className="w-full shadow-md">
+      {/* Top Bar */}
+      <div className="flex items-center justify-between px-6 py-3 bg-white border-b">
+        {/* Logo + App Name */}
         <div className="flex items-center gap-3">
-          <Heart className="h-7 w-7 text-primary" />
-          <div>
-            <div className="text-lg font-bold">{t.appName}</div>
-            <div className="text-xs text-muted-foreground">{t.subtitle}</div>
-          </div>
+          <img src="/logo.png" alt="Logo" className="h-8 w-8" />
+          <div className="font-bold text-lg text-foreground">{t.appName}</div>
         </div>
+
+        {/* Logout */}
+        {user && (
+          <button
+            onClick={logout}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-50 text-red-600 hover:bg-red-100 transition"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>{t.logout}</span>
+          </button>
+        )}
       </div>
 
-      <div className="flex items-center gap-3">
-        <select
-          value={lang}
-          onChange={(e) => setLang(e.target.value)}
-          className="px-2 py-1 rounded-md border border-muted bg-transparent"
-          aria-label={t.selectLanguage}
-        >
-          <option value="en">EN</option>
-          <option value="hi">हि</option>
-          <option value="pb">ਪੰ</option>
-        </select>
+      {/* Bottom Bar */}
+      <div className="flex items-center justify-between px-6 py-2 bg-gradient-to-r from-primary/5 via-background to-secondary/5">
+        {/* Welcome text */}
+        <div className="text-sm text-foreground">
+          {user ? `${t.welcome}, ${user.name}` : ""}
+        </div>
 
-        {user ? (
-          <div className="flex items-center gap-3">
-            <div className="text-sm">{t.welcome}, <span className="font-semibold">{user.name}</span></div>
-            <button onClick={logout} className="p-2 rounded-md hover:bg-muted" title={t.logout}>
-              <LogOut className="h-5 w-5" />
+        {/* Language Switch */}
+        <div className="flex gap-2">
+          {langs.map((l) => (
+            <button
+              key={l.code}
+              onClick={() => setLang(l.code)}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition ${
+                lang === l.code
+                  ? "bg-gradient-to-r from-primary to-secondary text-white shadow-md"
+                  : "bg-muted text-muted-foreground hover:bg-muted/70"
+              }`}
+            >
+              {l.label}
             </button>
-          </div>
-        ) : (
-          <div className="text-sm text-muted-foreground"> </div>
-        )}
+          ))}
+        </div>
       </div>
     </header>
   );

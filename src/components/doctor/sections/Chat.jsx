@@ -1,32 +1,37 @@
 // src/components/doctor/sections/Chat.jsx
-import React from 'react';
-import { MessageCircle } from 'lucide-react';
-import Card from '../../common/Card';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, MessageCircle } from "lucide-react";
+import NavBar from "../../common/NavBar";
+import { useLanguage } from "../../../context/LanguageContext";
 
-export default function Chat({ threads = [] }) {
-  const sample = threads.length ? threads : [
-    { id: 'm1', patient: 'John Doe', last: 'Please advise about medication' },
-    { id: 'm2', patient: 'Jane Roe', last: 'Thank you doctor' },
-  ];
+export default function Chat() {
+  const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
-    <section className="space-y-4">
-      <div className="flex items-center gap-3">
-        <MessageCircle className="h-8 w-8 text-secondary" />
-        <h2 className="text-2xl font-bold">Chat</h2>
-      </div>
+    <div className="min-h-screen bg-background">
+      <NavBar />
+      <main className="p-6 max-w-6xl mx-auto">
+        <button
+          onClick={() => navigate("/doctor")}
+          className="flex items-center gap-2 text-sm text-primary hover:underline mb-4"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t.dashboard}
+        </button>
 
-      <div className="space-y-3">
-        {sample.map(s => (
-          <Card key={s.id} className="flex items-center justify-between">
-            <div>
-              <div className="font-semibold">{s.patient}</div>
-              <div className="text-sm text-muted-foreground truncate max-w-xs">{s.last}</div>
-            </div>
-            <div><button className="px-3 py-1 rounded-md bg-primary text-white">Open</button></div>
-          </Card>
-        ))}
-      </div>
-    </section>
+        <h1 className="text-2xl font-bold flex items-center gap-2 mb-6">
+          <MessageCircle className="h-6 w-6 text-primary" />
+          {t.chat}
+        </h1>
+
+        <div className="bg-card rounded-xl p-6 shadow">
+          <p className="text-muted-foreground">
+            {t.chat} section content goes here.
+          </p>
+        </div>
+      </main>
+    </div>
   );
 }

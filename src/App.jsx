@@ -1,54 +1,75 @@
 // src/App.jsx
-import React, { useState } from 'react';
-import { LanguageProvider } from './context/LanguageContext';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import LanguageSelector from './components/language/LanguageSelector';
-import RoleSelection from './components/auth/RoleSelection';
-import LoginForm from './components/auth/LoginForm';
-import PatientHome from './pages/PatientHome';
-import DoctorHome from './pages/DoctorHome';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { LanguageProvider } from "./context/LanguageContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
-function RoutesInside() {
+// Auth
+import MultiStepAuth from "./components/auth/MultiStepAuth";
+
+// Patient
+import PatientHome from "./pages/PatientHome";
+import SmartHealth from "./components/patient/sections/SmartHealth";
+import Tutorials from "./components/patient/sections/Tutorials";
+import SymptomChecker from "./components/patient/sections/SymptomChecker";
+import ConsultDoctor from "./components/patient/sections/ConsultDoctor";
+import Biolocker from "./components/patient/sections/Biolocker";
+import EmergencySOS from "./components/patient/sections/EmergencySOS";
+
+// Doctor
+import DoctorHome from "./pages/DoctorHome";
+import Appointments from "./components/doctor/sections/Appointments";
+import VideoCalls from "./components/doctor/sections/VideoCalls";
+import VoiceCalls from "./components/doctor/sections/VoiceCalls";
+import Chat from "./components/doctor/sections/Chat";
+import PatientRecords from "./components/doctor/sections/PatientRecords";
+
+function ProtectedRoutes() {
   const { user } = useAuth();
-  const [step, setStep] = useState('language'); // language, role, details, dashboard
-  const [role, setRole] = useState(null);
 
   if (!user) {
-    if (step === 'language') {
-      return (
-        <div className="min-h-screen flex items-center justify-center p-4">
-          <LanguageSelector />
-          <div className="mt-4 w-full max-w-md mx-auto text-center">
-            <button onClick={() => setStep('role')} className="mt-4 px-4 py-2 rounded-xl bg-primary text-white">Continue</button>
-          </div>
-        </div>
-      );
-    }
-
-    if (step === 'role') {
-      return (
-        <div className="min-h-screen flex items-center justify-center p-4">
-          <RoleSelection onBack={() => setStep('language')} onSelectRole={(r) => { setRole(r); setStep('details'); }} />
-        </div>
-      );
-    }
-
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <LoginForm role={role} onBack={() => setStep('role')} />
-      </div>
-    );
+    return <MultiStepAuth />;
   }
 
-  // logged in
-  return user.role === 'patient' ? <PatientHome /> : <DoctorHome />;
+  return (
+    <Routes>
+      {/* Patient Routes */}
+      {user.role === "patient" && (
+        <>
+          <Route path="/patient" element={<PatientHome />} />
+          <Route path="/patient/smart-health" element={<SmartHealth />} />
+          <Route path="/patient/tutorials" element={<Tutorials />} />
+          <Route path="/patient/symptom-checker" element={<SymptomChecker />} />
+          <Route path="/patient/consult-doctor" element={<ConsultDoctor />} />
+          <Route path="/patient/biolocker" element={<Biolocker />} />
+          <Route path="/patient/emergency-sos" element={<EmergencySOS />} />
+          <Route path="*" element={<Navigate to="/patient" replace />} />
+        </>
+      )}
+
+      {/* Doctor Routes */}
+      {user.role === "doctor" && (
+        <>
+          <Route path="/doctor" element={<DoctorHome />} />
+          <Route path="/doctor/appointments" element={<Appointments />} />
+          <Route path="/doctor/video-calls" element={<VideoCalls />} />
+          <Route path="/doctor/voice-calls" element={<VoiceCalls />} />
+          <Route path="/doctor/chat" element={<Chat />} />
+          <Route path="/doctor/patient-records" element={<PatientRecords />} />
+          <Route path="*" element={<Navigate to="/doctor" replace />} />
+        </>
+      )}
+    </Routes>
+  );
 }
 
 export default function App() {
   return (
     <LanguageProvider>
       <AuthProvider>
-        <RoutesInside />
+        <Router>
+          <ProtectedRoutes />
+        </Router>
       </AuthProvider>
     </LanguageProvider>
   );

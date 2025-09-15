@@ -1,39 +1,37 @@
 // src/components/patient/sections/SmartHealth.jsx
-import React from 'react';
-import { ShieldPlus, CreditCard } from 'lucide-react';
-import Card from '../../common/Card';
-import { useLanguage } from '../../../context/LanguageContext';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, ShieldPlus } from "lucide-react";
+import NavBar from "../../common/NavBar";
+import { useLanguage } from "../../../context/LanguageContext";
 
-export default function SmartHealth({ data = [] }) {
+export default function SmartHealth() {
+  const navigate = useNavigate();
   const { t } = useLanguage();
 
-  // data prop is an array of items {title, description, icon}
   return (
-    <section className="space-y-4">
-      <div className="flex items-center gap-3">
-        <ShieldPlus className="h-8 w-8 text-primary" />
-        <h2 className="text-2xl font-bold">{t.smartHealth}</h2>
-      </div>
+    <div className="min-h-screen bg-background">
+      <NavBar />
+      <main className="p-6 max-w-6xl mx-auto">
+        <button
+          onClick={() => navigate("/patient")}
+          className="flex items-center gap-2 text-sm text-primary hover:underline mb-4"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t.dashboard}
+        </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CreditCard className="h-8 w-8 mb-3 text-primary" />
-          <h3 className="font-semibold">{t.govSchemes}</h3>
-          <p className="text-sm text-muted-foreground mt-2">Access schemes, eligibility checks and resources.</p>
-        </Card>
+        <h1 className="text-2xl font-bold flex items-center gap-2 mb-6">
+          <ShieldPlus className="h-6 w-6 text-primary" />
+          {t.smartHealth}
+        </h1>
 
-        <Card>
-          <ShieldPlus className="h-8 w-8 mb-3 text-secondary" />
-          <h3 className="font-semibold">{t.insurance}</h3>
-          <p className="text-sm text-muted-foreground mt-2">Explore health insurance options and documents.</p>
-        </Card>
-
-        <Card>
-          <CreditCard className="h-8 w-8 mb-3 text-primary" />
-          <h3 className="font-semibold">{t.loans}</h3>
-          <p className="text-sm text-muted-foreground mt-2">Find loans designed for medical needs.</p>
-        </Card>
-      </div>
-    </section>
+        <div className="bg-card rounded-xl p-6 shadow">
+          <p className="text-muted-foreground">
+            {t.smartHealth} section content goes here.
+          </p>
+        </div>
+      </main>
+    </div>
   );
 }

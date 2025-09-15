@@ -31,6 +31,8 @@ const translations = {
     watchTutorials: "Watch Health Tutorials",
     checkSymptoms: "Check Your Symptoms",
     bookAppointment: "Book Appointment",
+    appointment: "Appointment",
+    appointments: "Appointments",
     medicalRecords: "Your Medical Records",
     nearestHospitals: "Nearest Hospitals",
     firstAid: "First Aid Guide",
@@ -66,6 +68,8 @@ const translations = {
     voiceCalls: "वॉइस कॉल",
     chat: "चैट",
     patientRecords: "मरीज़ के रिकॉर्ड",
+    appointment: "अपॉइंटमेंट",
+    appointments: "अपॉइंटमेंट्स",
   },
   pb: {
     appName: "ਨਭਾ ਸਾਰਥੀ",
@@ -92,7 +96,8 @@ const translations = {
     voiceCalls: "ਵੌਇਸ ਕਾਲ",
     chat: "ਚੈਟ",
     patientRecords: "ਮਰੀਜ਼ ਦੇ ਰਿਕਾਰਡ",
+    appointment: "ਅਪਾਇੰਟਮੈਂਟ",
+    appointments: "ਅਪਾਇੰਟਮੈਂਟਸ",
   },
 };
-
 export default translations;
