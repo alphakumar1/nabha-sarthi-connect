@@ -1,0 +1,18 @@
+/* src/styles/globals.css */
+:root{
+  --primary: #06b6d4;
+  --secondary: #7c3aed;
+  --muted: #f3f4f6;
+  --foreground: #0f172a;
+  --background: #f8fafc;
+  --emergency: #ef4444;
+}
+.bg-primary { background-color: var(--primary); }
+.text-primary { color: var(--primary); }
+.bg-secondary { background-color: var(--secondary); }
+.text-secondary { color: var(--secondary); }
+.bg-muted { background-color: var(--muted); }
+.text-muted-foreground { color: #6b7280; }
+.bg-card { background-color: white; }
+.bg-background { background-color: var(--background); }
+.text-emergency { color: var(--emergency); }
